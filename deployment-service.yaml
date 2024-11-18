@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment # Kubernetes resource kind we are creating
 metadata:
-  name: boardgame-deployment
+  name: zomato-deployment
 spec:
   selector:
     matchLabels:
-      app: boardgame
+      app: zomato
   replicas: 2 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
-        app: boardgame
+        app: zomato
     spec:
       containers:
-        - name: boardgame
-          image: muhannadpv/boardshack:latest # Image that will be used to containers in the cluster
+        - name: zomato
+          image: muhannadpv/zomato:latest # Image that will be used to containers in the cluster
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080 # The port that the container is running on in the cluster
+            - containerPort: 8083 # The port that the container is running on in the cluster
