@@ -70,6 +70,21 @@ pipeline{
                 sh 'docker run -d --name zomato -p 3000:3000 muhannadpv/zomato:latest'
             }
         }
+        stage("Deploy to kubernates"){
+            steps {
+                withKubeConfig(caCertificate: '', clusterName: 'muhannad-eks', contextName: '', credentialsId: 'kube-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://A35FAF6F364AF2C3D089B7C0570BD57C.gr7.ap-south-1.eks.amazonaws.com') {
+                      sh "kubectl apply -f deployment-service.yaml"
+                }
+        
+    }
+        }
+        stage('Verify the Deployment') {
+            steps {
+                withKubeConfig(caCertificate: '', clusterName: 'muhannad-eks', contextName: '', credentialsId: 'kube-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://A35FAF6F364AF2C3D089B7C0570BD57C.gr7.ap-south-1.eks.amazonaws.com') {
+                 sh "kubectl get pods -n webapps"
+                 sh "kubectl get svc -n webapps"
+                }
+            }
+}
     }
 }
-
