@@ -54,20 +54,20 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
                        sh "docker build -t zomato ."
-                       sh "docker tag zomato muhannadpv/zomato:latest "
-                       sh "docker push muhannadpv/zomato:latest "
+                       sh "docker tag zomato muhannadpv/zomato:v1"
+                       sh "docker push muhannadpv/zomato:v1"
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image muhannadpv/zomato:latest > trivy.txt" 
+                sh "trivy image muhannadpv/zomato:v1 > trivy.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name zomato -p 3000:3000 muhannadpv/zomato:latest'
+                sh 'docker run -d --name zomato -p 3000:3000 muhannadpv/zomato:v1'
             }
         }
         stage("Deploy to kubernates"){
